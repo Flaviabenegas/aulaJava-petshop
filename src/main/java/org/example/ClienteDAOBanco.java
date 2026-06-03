@@ -9,7 +9,7 @@ import java.util.List;
 
 public final class ClienteDAOBanco implements ClienteDAO {
 
-    private final String URL = "jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:5432/postgres";
+    private final String URL = "jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:6543/postgres";
     private final String USER = "postgres.mecsmvvmevjryzlcnqqe";
     private final String PASSWORD = "Stilo@142690";
 
