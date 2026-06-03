@@ -1,6 +1,3 @@
 package org.example;
-
-
-    public record ProdutoDTO(int codProduto, String nome, double valor) {
-    }
-
+public record ProdutoDTO(int id, String descricao, double preco, int qtd) {
+}

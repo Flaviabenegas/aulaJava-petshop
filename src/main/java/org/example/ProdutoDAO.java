@@ -1,12 +1,10 @@
 package org.example;
 
 import java.util.List;
-public sealed interface ProdutoDAO permits ProdutoDAOimpl,ProdutoDAOBanco {
-    void salvar(ProdutoDTO produto); //C
 
-    List<ProdutoDTO> listarTodos(); //R
-
-    void atualizarNome(int codProduto, String novoNome);//U
-
-    void excluir()
+public sealed interface ProdutoDAO permits ProdutoDAOimpl, ProdutoDAOBanco {
+    void salvar(ProdutoDTO produto);
+    List<ProdutoDTO> listarTodos();
+    void atualizar(int id, String novaDescricao, double novoPreco, int novaQtd); // U (Update completo)
+    void excluir(int id);
 }

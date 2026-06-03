@@ -7,10 +7,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ProdutoDAOBanco implements ProdutoDAO {
+public final class ClienteDAOBanco implements ClienteDAO {
 
     private final String URL = "jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:5432/postgres";
-
     private final String USER = "postgres.mecsmvvmevjryzlcnqqe";
     private final String PASSWORD = "Stilo@142690";
 
@@ -21,51 +20,51 @@ public final class ProdutoDAOBanco implements ProdutoDAO {
     }
 
     @Override
-    public void salvar(ProdutoDTO produto) {
-        String sql = "INSERT INTO produtos (descricao, preco, qtd) VALUES (?, ?, ?)";
+    public void salvar(ClienteDTO cliente) {
+        String sql = "INSERT INTO cliente (nome, cpf, telefone) VALUES (?, ?, ?)";
         try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, produto.descricao());
-            stmt.setDouble(2, produto.preco());
-            stmt.setInt(3, produto.qtd());
+            stmt.setString(1, cliente.nome());
+            stmt.setString(2, cliente.cpf());
+            stmt.setString(3, cliente.telefone());
             stmt.executeUpdate();
-            System.out.println("[BANCO] Produto gravado na nuvem com sucesso!");
+            System.out.println("[BANCO] Cliente gravado na nuvem com sucesso!");
         } catch (Exception e) {
             System.out.println("[ERRO BANCO] " + e.getMessage());
         }
     }
 
     @Override
-    public List<ProdutoDTO> listarTodos() {
-        List<ProdutoDTO> listaProdutos = new ArrayList<>();
-        String sql = "SELECT * FROM produtos";
+    public List<ClienteDTO> listarTodos() {
+        List<ClienteDTO> listaCliente = new ArrayList<>();
+        String sql = "SELECT * FROM cliente";
         try (Connection conn = conectar();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                listaProdutos.add(new ProdutoDTO(
+                listaCliente.add(new ClienteDTO(
                         rs.getInt("id"),
-                        rs.getString("descricao"),
-                        rs.getDouble("preco"),
-                        rs.getInt("qtd")
+                        rs.getString("nome"),
+                        rs.getString("cpf"),
+                        rs.getString("telefone")
                 ));
             }
         } catch (Exception e) {
             System.out.println("[ERRO BANCO] " + e.getMessage());
         }
-        return listaProdutos;
+        return listaCliente;
     }
 
     @Override
-    public void atualizar(int id, String novaDescricao, double novoPreco, int novaQtd) {
-        String sql = "UPDATE produtos SET descricao = ?, preco = ?, qtd = ? WHERE id = ?";
+    public void atualizar(int id, String novoNome, String novoCpf, String novoTelefone) {
+        String sql = "UPDATE cliente SET nome = ?, cpf = ?, telefone = ? WHERE id = ?";
         try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, novaDescricao);
-            stmt.setDouble(2, novoPreco);
-            stmt.setInt(3, novaQtd);
+            stmt.setString(1, novoNome);
+            stmt.setString(2, novoCpf);
+            stmt.setString(3, novoTelefone);
             stmt.setInt(4, id);
             stmt.executeUpdate();
-            System.out.println("[BANCO] Produto atualizado com sucesso no banco!");
+            System.out.println("[BANCO] Cliente atualizado com sucesso no banco!");
         } catch (Exception e) {
             System.out.println("[ERRO BANCO] " + e.getMessage());
         }
@@ -73,11 +72,11 @@ public final class ProdutoDAOBanco implements ProdutoDAO {
 
     @Override
     public void excluir(int id) {
-        String sql = "DELETE FROM produtos WHERE id = ?";
+        String sql = "DELETE FROM cliente WHERE id = ?";
         try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
-            System.out.println("[BANCO] Produto deletado da nuvem com sucesso!");
+            System.out.println("[BANCO] Cliente deletado da nuvem com sucesso!");
         } catch (Exception e) {
             System.out.println("[ERRO BANCO] " + e.getMessage());
         }
