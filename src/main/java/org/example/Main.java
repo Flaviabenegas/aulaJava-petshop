@@ -1,20 +1,23 @@
 package org.example;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        try {
+               Connection conexao = ConexaoBanco.obterConexao();
+            System.out.println("[SUCESSO] Conexão estabelecida com o Supabase!");
+            DatabaseInitializer.inicializarBanco(conexao);
+        } catch (Exception e) {
+            System.err.println("Erro crítico ao iniciar o sistema: " + e.getMessage());
+        }
+
+
         Scanner teclado = new Scanner(System.in);
 
-        System.out.println("Bem vindo ao pet shop");
-        System.out.println("                .-._     ");
-        System.out.println("               {_}^ )o  ");
-        System.out.println("      {\\________//~`     ");
-        System.out.println("       (         )");
-        System.out.println("       /||~~~~~||\\");
-        System.out.println(" auu  |_\\\\_    \\\\_\\_   ");
-        System.out.println("      \"' \"\"'    \"\"'\"'");
         System.out.println("                          .-.");
         System.out.println(" (_______________________()6 `-,");
         System.out.println(" (   Bem vindo ao pet shop      )");
@@ -66,8 +69,11 @@ public class Main {
     private static void menuFornecedor(Scanner teclado, FornecedorDAO servicoFornecedor) {
         int opcao = 0;
         while (opcao != 5) {
-            System.out.println("\n--- FORNECEDORES ---");
-            System.out.println("1. Cadastrar Fornecedor");
+            System.out.println("            __");
+            System.out.println("      (___()'`; --- FORNECEDORES ---");
+            System.out.println("      /,    /`");
+            System.out.println("      \\\\\"--\\\\");
+                        System.out.println("1. Cadastrar Fornecedor");
             System.out.println("2. Consultar Todos");
             System.out.println("3. Atualizar Fornecedor");
             System.out.println("4. Excluir Fornecedor");
@@ -132,7 +138,10 @@ public class Main {
     private static void menuProduto(Scanner teclado, ProdutoDAO servicoProduto) {
         int opcao = 0;
         while (opcao != 5) {
-            System.out.println("\n--- PRODUTOS ---");
+            System.out.println("            __");
+            System.out.println("      (___()'`; --- PRODUTOS ---");
+            System.out.println("      /,    /`");
+            System.out.println("      \\\\\"--\\\\");
             System.out.println("1. Cadastrar Produto");
             System.out.println("2. Consultar Todos");
             System.out.println("3. Atualizar Produto");
@@ -198,7 +207,10 @@ public class Main {
     private static void menuCliente(Scanner teclado, ClienteDAO servicoCliente) {
         int opcao = 0;
         while (opcao != 5) {
-            System.out.println("\n--- CLIENTES ---");
+            System.out.println("            __");
+            System.out.println("      (___()'`; --- CLIENTES ---");
+            System.out.println("      /,    /`");
+            System.out.println("      \\\\\"--\\\\");
             System.out.println("1. Cadastrar Cliente");
             System.out.println("2. Consultar Todos");
             System.out.println("3. Atualizar Cliente");
