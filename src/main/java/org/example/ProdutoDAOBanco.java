@@ -1,7 +1,6 @@
 package org.example;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -9,21 +8,11 @@ import java.util.List;
 
 public final class ProdutoDAOBanco implements ProdutoDAO {
 
-    private final String URL = "jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:5432/postgres";
-
-    private final String USER = "postgres.mecsmvvmevjryzlcnqqe";
-    private final String PASSWORD = "Stilo@142690";
-
-    private Connection conectar() throws Exception {
-        Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-        System.out.println("[SUCESSO] Conexão estabelecida com o Supabase!");
-        return conn;
-    }
-
     @Override
     public void salvar(ProdutoDTO produto) {
         String sql = "INSERT INTO produtos (descricao, preco, qtd) VALUES (?, ?, ?)";
-        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBanco.obterConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, produto.descricao());
             stmt.setDouble(2, produto.preco());
             stmt.setInt(3, produto.qtd());
@@ -38,7 +27,7 @@ public final class ProdutoDAOBanco implements ProdutoDAO {
     public List<ProdutoDTO> listarTodos() {
         List<ProdutoDTO> listaProdutos = new ArrayList<>();
         String sql = "SELECT * FROM produtos";
-        try (Connection conn = conectar();
+        try (Connection conn = ConexaoBanco.obterConexao();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -59,7 +48,8 @@ public final class ProdutoDAOBanco implements ProdutoDAO {
     @Override
     public void atualizar(int id, String novaDescricao, double novoPreco, int novaQtd) {
         String sql = "UPDATE produtos SET descricao = ?, preco = ?, qtd = ? WHERE id = ?";
-        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBanco.obterConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, novaDescricao);
             stmt.setDouble(2, novoPreco);
             stmt.setInt(3, novaQtd);
@@ -74,7 +64,8 @@ public final class ProdutoDAOBanco implements ProdutoDAO {
     @Override
     public void excluir(int id) {
         String sql = "DELETE FROM produtos WHERE id = ?";
-        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBanco.obterConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
             System.out.println("[BANCO] Produto deletado da nuvem com sucesso!");
